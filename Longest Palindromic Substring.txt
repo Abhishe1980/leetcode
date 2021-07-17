@@ -1,0 +1,34 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        // bababd
+        // i    j
+        // to check if s is a palindrom we need
+        // to verify that for the two pointers i and j, the following
+        // property holds; s[i] == s[j].
+        
+        // we could start with starting index i; for the start of the
+        // palindrom and 
+        
+        // can this be done with dynamic programming?
+        // How about just find if s[i,j] *is* a palindrom
+        // and find the pair (i,j) such that s[i,j] which is of maximal size.
+        
+        // OPT[i,j] = true if memo[i,j] is a palindrom.
+        // OPT[i,j] = if s[i] == s[j] true && OPT[i+1,j-1]
+        //            if s[i] != s[j] false
+        // solution is in maximum (i,j) such that memo[i,j] == true.
+        int n = s.size();
+        vector<vector<bool>> memo(n, vector<bool>(n,true)); 
+        string res;
+        for (int i=n-1; i>=0 ;i--) {
+            for (int j=i; j<n;j++) {
+                if (i == j) memo[i][j] = true;
+                if (i < j && s[i] == s[j]) memo[i][j] = true && memo[i+1][j-1];
+                if (s[i] != s[j]) memo[i][j] = false;
+                if (memo[i][j] && j-i+1 > res.size()) res = s.substr(i, j-i+1);
+            }
+        }        
+        return res;
+    }
+};
